@@ -1,6 +1,8 @@
 <template>
     <div>
-        search
+       params:  {{$route.params.keyword}}
+       <br>
+        query:{{$route.query.k}}
     </div>
 </template>
 
