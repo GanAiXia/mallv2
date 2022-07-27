@@ -1,8 +1,42 @@
 <template>
     <!-- 商品分类导航 -->
     <div class="type-nav">
-        <div class="container">
-            <h2 class="all">全部商品分类</h2>
+        <div class="container" >
+            <div @mouseleave="leaveIndex">
+                <h2 class="all">全部商品分类</h2>
+                <div class="sort">
+                    <div class="all-sort-list2" @click="goSearch">
+                        <div class="item" v-for="(categoryOne, index) in categoryList" :key="index" :class="{cur: currentIndex == categoryOne.categoryId}" >
+                            <h3 @mouseenter="changeIndex(index)" >
+                                <a 
+                                :data-categoryName="categoryOne.categoryName"
+                                :data-category1Id="categoryOne.categoryId"
+                                >{{categoryOne.categoryName}}</a>
+                            </h3>
+                            <div class="item-list clearfix" :style="{display: currentIndex == index ? 'block' : 'none'}">
+                                <div class="subitem">
+                                    <dl class="fore" v-for="(categoryTwo, index) in categoryOne.categoryChild" :key="categoryTwo.categoryId">
+                                        <dt>
+                                            <a
+                                            :data-categoryName="categoryTwo.categoryName"
+                                            :data-category2Id="categoryTwo.categoryId"                                            
+                                            >{{categoryTwo.categoryName}}</a>
+                                        </dt>
+                                        <dd>
+                                            <em v-for="(categoryThr, index) in categoryTwo.categoryChild" :key="categoryThr.categoryId">
+                                                <a
+                                                :data-categoryName="categoryThr.categoryName"
+                                                :data-category3Id="categoryThr.categoryId"
+                                                >{{categoryThr.categoryName}}</a>
+                                            </em>
+                                        </dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </div>
             <nav class="nav">
                 <a href="###">服装城</a>
                 <a href="###">美妆馆</a>
@@ -13,37 +47,55 @@
                 <a href="###">有趣</a>
                 <a href="###">秒杀</a>
             </nav>
-            <div class="sort">
-                <div class="all-sort-list2">
-                    <div class="item bo" v-for="(categoryOne, categoryId) in categoryList" :key="categoryId">
-                        <h3>
-                            <a href="">{{categoryOne.categoryName}}</a>
-                        </h3>
-                        <div class="item-list clearfix">
-                            <div class="subitem">
-                                <dl class="fore" v-for="(categoryTwo, categoryId) in categoryOne.categoryChild" :key="categoryId">
-                                    <dt>
-                                        <a href="">{{categoryTwo.categoryName}}</a>
-                                    </dt>
-                                    <dd>
-                                        <em v-for="(categoryThr, categoryId) in categoryTwo.categoryChild" key="categoryId">
-                                            <a href="">{{categoryThr.categoryName}}</a>
-                                        </em>
-                                    </dd>
-                                </dl>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </template>
 
 <script>
-    import { mapState } from "vuex";
+    import { mapState } from "vuex"
+    import throttle  from 'lodash/throttle'
+
     export default {
         name: "TypeNav",
+        data() {
+            return {
+                currentIndex: -1,
+            }
+        },
+        methods: {
+            changeIndex: throttle(function (categoryId) {
+                this.currentIndex = categoryId + 1
+            }, 50),
+            leaveIndex(){
+                this.currentIndex = -1
+            },
+            goSearch(event){
+                let targetNode = event.target
+                let { categoryname, category1id, category2id, category3id } = targetNode.dataset;
+                //判断点击的是a【不管是1|2|3】
+                if (categoryname) {
+                    //点击只要是a,就是往search模块跳转
+                    var location = {
+                    name: "search"
+                    }
+                    let query = {categoryName:　categoryname}
+                    //一级分类的a
+                    if (category1id) {
+                    query.category1Id = category1id;
+                    } else if (category2id) {
+                    //二级分类的a
+                    query.category2Id = category2id;
+                    } else {
+                    //三级分类的a
+                    query.category3Id = category3id;
+                    }
+                    location.query = query
+                    //目前商品分类这里携带参数只有query参数
+                    this.$router.push(location)
+                }
+            }
+        },
         mounted() {
             this.$store.dispatch("categoryList")
         },
@@ -165,12 +217,9 @@
                                 }
                             }
                         }
-
-                        &:hover {
-                            .item-list {
-                                display: block;
-                            }
-                        }
+                    }
+                    .cur {
+                        background-color: skyblue;
                     }
                 }
             }
