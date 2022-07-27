@@ -1,7 +1,7 @@
 //search模块
 //存储数据
 const state = {
-    a: 1
+    
 }
 //修改state
 const mutations = {}
