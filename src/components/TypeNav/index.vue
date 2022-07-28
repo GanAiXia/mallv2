@@ -99,6 +99,7 @@
                     //三级分类的a
                     query.category3Id = category3id;
                     }
+                    //合并params和query请求
                     if (this.$route.params) {
                         location.params = this.$route.params
                         location.query = query

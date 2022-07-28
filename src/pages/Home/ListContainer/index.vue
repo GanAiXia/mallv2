@@ -3,7 +3,7 @@
             <div class="sortList clearfix">
                 <div class="center">
                     <!--banner轮播-->
-                    <div class="swiper-container" id="mySwiper">
+                    <div class="swiper-container" ref="mySwiper">
                         <div class="swiper-wrapper">
                             <div class="swiper-slide" v-for="(carousel, index) in bannerList" :key="carousel.id">
                                 <img :src="carousel.imgUrl" />
@@ -109,13 +109,15 @@
             this.$store.dispatch("getBannerList")
         },
         computed:{
+            //获取state的bannerlist数据
             ...mapState({bannerList: state => state.home.bannerList})
         },
         watch:{
+            //banner渲染完成后newbanner
             bannerList:{
                 handler(newValue, oldValue){
                     this.$nextTick(() => {
-                        new Swiper ('#mySwiper', {
+                        new Swiper (this.$refs.mySwiper, {
                             //direction: 'vertical', // 垂直切换选项
                             loop: true, // 循环模式选项
                             

@@ -54,6 +54,7 @@
           goSearch(){
             // this.$router.push("/search/" + this.keyword + "?k=" + this.keyword)
             // this.$router.push(`/search/${this.keyword}?k=${this.keyword}`)
+            //合并params和query请求
             if (this.$route.query) {
               let location = {name:　'search', params: {keyword: this.keyword || undefined}}
               location.query = this.$route.query
