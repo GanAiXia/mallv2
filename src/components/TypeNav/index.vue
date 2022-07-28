@@ -85,7 +85,7 @@
                 //判断点击的是a【不管是1|2|3】
                 if (categoryname) {
                     //点击只要是a,就是往search模块跳转
-                    var location = {
+                    let location = {
                     name: "search"
                     }
                     let query = {categoryName:　categoryname}
@@ -99,7 +99,10 @@
                     //三级分类的a
                     query.category3Id = category3id;
                     }
-                    location.query = query
+                    if (this.$route.params) {
+                        location.params = this.$route.params
+                        location.query = query
+                    }
                     //目前商品分类这里携带参数只有query参数
                     this.$router.push(location)
                 }
