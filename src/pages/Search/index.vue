@@ -1,8 +1,6 @@
 <template>
     <div>
-       params:  {{$route.params.keyword}}
-       <br>
-        query:{{$route.query.k}}
+        <TypeNav/>
     </div>
 </template>
 

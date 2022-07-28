@@ -2,40 +2,42 @@
     <!-- 商品分类导航 -->
     <div class="type-nav">
         <div class="container" >
-            <div @mouseleave="leaveIndex">
+            <div @mouseleave="leaveIndex" @mouseenter="enterShow">
                 <h2 class="all">全部商品分类</h2>
-                <div class="sort">
-                    <div class="all-sort-list2" @click="goSearch">
-                        <div class="item" v-for="(categoryOne, index) in categoryList" :key="index" :class="{cur: currentIndex == categoryOne.categoryId}" >
-                            <h3 @mouseenter="changeIndex(index)" >
-                                <a 
-                                :data-categoryName="categoryOne.categoryName"
-                                :data-category1Id="categoryOne.categoryId"
-                                >{{categoryOne.categoryName}}</a>
-                            </h3>
-                            <div class="item-list clearfix" :style="{display: currentIndex == index ? 'block' : 'none'}">
-                                <div class="subitem">
-                                    <dl class="fore" v-for="(categoryTwo, index) in categoryOne.categoryChild" :key="categoryTwo.categoryId">
-                                        <dt>
-                                            <a
-                                            :data-categoryName="categoryTwo.categoryName"
-                                            :data-category2Id="categoryTwo.categoryId"                                            
-                                            >{{categoryTwo.categoryName}}</a>
-                                        </dt>
-                                        <dd>
-                                            <em v-for="(categoryThr, index) in categoryTwo.categoryChild" :key="categoryThr.categoryId">
+                <transition name="sort">
+                    <div class="sort" v-show="show">
+                        <div class="all-sort-list2" @click="goSearch">
+                            <div class="item" v-for="(categoryOne, index) in categoryList" :key="index" :class="{cur: currentIndex == categoryOne.categoryId}" >
+                                <h3 @mouseenter="changeIndex(index)" >
+                                    <a 
+                                    :data-categoryName="categoryOne.categoryName"
+                                    :data-category1Id="categoryOne.categoryId"
+                                    >{{categoryOne.categoryName}}</a>
+                                </h3>
+                                <div class="item-list clearfix" :style="{display: currentIndex == index ? 'block' : 'none'}">
+                                    <div class="subitem">
+                                        <dl class="fore" v-for="(categoryTwo, index) in categoryOne.categoryChild" :key="categoryTwo.categoryId">
+                                            <dt>
                                                 <a
-                                                :data-categoryName="categoryThr.categoryName"
-                                                :data-category3Id="categoryThr.categoryId"
-                                                >{{categoryThr.categoryName}}</a>
-                                            </em>
-                                        </dd>
-                                    </dl>
+                                                :data-categoryName="categoryTwo.categoryName"
+                                                :data-category2Id="categoryTwo.categoryId"                                            
+                                                >{{categoryTwo.categoryName}}</a>
+                                            </dt>
+                                            <dd>
+                                                <em v-for="(categoryThr, index) in categoryTwo.categoryChild" :key="categoryThr.categoryId">
+                                                    <a
+                                                    :data-categoryName="categoryThr.categoryName"
+                                                    :data-category3Id="categoryThr.categoryId"
+                                                    >{{categoryThr.categoryName}}</a>
+                                                </em>
+                                            </dd>
+                                        </dl>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>                
+                    </div>                 
+                </transition>               
             </div>
             <nav class="nav">
                 <a href="###">服装城</a>
@@ -61,6 +63,7 @@
         data() {
             return {
                 currentIndex: -1,
+                show: true
             }
         },
         methods: {
@@ -69,6 +72,12 @@
             }, 50),
             leaveIndex(){
                 this.currentIndex = -1
+                if (this.$route.path != "/home") {
+                    this.show = false
+                }
+            },
+            enterShow(){
+                this.show = true
             },
             goSearch(event){
                 let targetNode = event.target
@@ -97,7 +106,9 @@
             }
         },
         mounted() {
-            this.$store.dispatch("categoryList")
+            if (this.$route.path!='/home') {
+                this.show = false
+            }
         },
         computed: {
             //右侧需要一个函数，当计算属性的时候，右侧函数会立即执行一次
@@ -222,6 +233,16 @@
                         background-color: skyblue;
                     }
                 }
+            }
+
+            .sort-enter{
+                height: 0;
+            }
+            .sort-enter-to{
+                height: 461px;
+            }
+            .sort-enter-active{
+                transition: all .5s linear;
             }
         }
     }
