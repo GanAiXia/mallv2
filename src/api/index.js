@@ -10,3 +10,6 @@ export const reqGetBannerList = ()=> mockRequests.get('/banner')
 
 //获取floor
 export const reqFloorList = ()=> mockRequests.get('/floor')
+
+//获取搜索数据
+export const reqGetSearchInfo = (params) => requests({url: "/list", method: "post", data: params})
