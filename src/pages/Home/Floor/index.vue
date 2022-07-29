@@ -6,7 +6,7 @@
                     <h3 class="fl">{{floorList.name}}</h3>
                     <div class="fr">
                         <ul class="nav-tabs clearfix">
-                            <li class="" v-for="(nav, index) in floorList.navList" key="index">
+                            <li class="" v-for="(nav, index) in floorList.navList" :key="index">
                                 <a :href="nav.url" data-toggle="tab">{{nav.text}}</a>
                             </li>
                         </ul>
@@ -17,14 +17,14 @@
                         <div class="floor-1">
                             <div class="blockgary">
                                 <ul class="jd-list">
-                                    <li v-for="(keyword, index) in floorList.keywords" key="index">{{keyword}}</li>
+                                    <li v-for="(keyword, index) in floorList.keywords" :key="index">{{keyword}}</li>
                                 </ul>
                                 <img :src="floorList.imgUrl" />
                             </div>
                             <div class="floorBanner">
                                 <div class="swiper-container" id="floor1Swiper" ref="cur">
                                     <div class="swiper-wrapper">
-                                        <div class="swiper-slide" v-for="(carousel, index) in floorList.carouselList" key="carousel.id">
+                                        <div class="swiper-slide" v-for="(carousel, index) in floorList.carouselList" :key="carousel.id">
                                             <img :src="carousel.imgUrl">
                                         </div>
                                     </div>

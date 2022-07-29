@@ -20,7 +20,17 @@ const actions = {
     }
 }
 //简化数据处理，理解为计算属性
-const getters = {}
+const getters = {
+    goodList(state){
+        return state.searchList.goodsList || []
+    },
+    trademarkList(state){
+        return state.searchList.trademarkList
+    },
+    attrsList(state){
+        return state.searchList.attrsList
+    }
+}
 
 export default {
     state,

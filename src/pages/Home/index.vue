@@ -5,7 +5,7 @@
         <Command/>
         <Rank/>
         <Like/>
-        <Floor v-for="(floor, index) in floorList" key="floor.id" :floorList="floor"/>
+        <Floor v-for="(floor, index) in floorList" :key="floor.id" :floorList="floor"/>
         <Brand/>
     </div>
 </template>
