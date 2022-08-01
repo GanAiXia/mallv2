@@ -33,7 +33,7 @@
                 </h1>
                 <div class="searchArea">
                     <form action="###" class="searchForm">
-                        <input v-model="keyword" type="text" id="autocomplete" class="input-error input-xxlarge" />
+                        <input v-model="keyword" @keyup.enter="goSearch"  type="text" id="autocomplete" class="input-error input-xxlarge" />
                         <button @click="goSearch" class="sui-btn btn-xlarge btn-danger" type="button">搜索</button>
                     </form>
                 </div>
@@ -62,6 +62,11 @@
             }
           }
         },
+        mounted(){
+          this.$bus.$on("clear", ()=>{
+            this.keyword = ''
+          })
+        }
     }
 </script>
 

@@ -11,13 +11,15 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x" v-for="(trademark, index) in trademarkList" :key="trademark.tmId">{{trademark.tmName}}</li>
+            <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">x</i></li>
+            <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">x</i></li>
+            <li class="with-x" v-if="searchParams.trademark">{{searchParams.trademark.split(":")[1]}}<i @click="removeTrademark">x</i></li>
           </ul>
         </div>
 
         <!--selector:子组件-->
         <!-- 绑定自定义事件:实现儿子给父组件传递数据 -->
-        <SearchSelector/>
+        <SearchSelector @trademarkInfo="trademarkInfo"/>
 
         <!--details-->
         <div class="details clearfix">
@@ -110,6 +112,7 @@
 <script>
   import SearchSelector from './SearchSelector/SearchSelector'
   import {mapGetters} from 'vuex'
+import search from '@/store/search'
   export default {
     name: 'Search',
     data() {
@@ -143,15 +146,41 @@
     methods: {
       getData(){
         this.$store.dispatch('getSearchInfo', this.searchParams)
+      },
+      removeCategoryName(){
+        this.searchParams.categoryName = undefined
+        this.searchParams.category1Id = undefined
+        this.searchParams.category2Id = undefined
+        this.searchParams.category3Id = undefined
+        this.getData()
+        if(this.$route.params){
+          this.$router.push({name: "search", params: this.$route.params})
+        }
+      },
+      removeKeyword(){
+        this.searchParams.keyword = undefined
+        this.getData()
+        this.$bus.$emit("clear")
+        if (this.$route.query) {
+          this.$router.push({name: "search", query: this.$route.query})
+        }
+      },
+      trademarkInfo(trademark){
+        this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`
+        this.getData()
+      },
+      removeTrademark(){
+        this.searchParams.trademark = undefined
+        this.getData()
       }
     },
     watch: {
       $route(newValue, oldValue){
         Object.assign(this.searchParams, this.$route.query, this.$route.params)
         this.getData()
-        this.searchParams.category1Id = ''
-        this.searchParams.category2Id = ''
-        this.searchParams.category3Id = ''
+        this.searchParams.category1Id = undefined
+        this.searchParams.category2Id = undefined
+        this.searchParams.category3Id = undefined
       }
     }
   }
