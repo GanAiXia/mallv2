@@ -11,15 +11,20 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
+            <!-- 分类 -->
             <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">x</i></li>
+            <!-- 关键字 -->
             <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyword">x</i></li>
+            <!-- 品牌 -->
             <li class="with-x" v-if="searchParams.trademark">{{searchParams.trademark.split(":")[1]}}<i @click="removeTrademark">x</i></li>
+            <!-- 属性值 -->
+            <li class="with-x" v-for="(attrValue, index) in searchParams.props" :key="index">{{attrValue.split(":")[1]}}<i @click="removeAttr(index)">x</i></li>
           </ul>
         </div>
 
         <!--selector:子组件-->
         <!-- 绑定自定义事件:实现儿子给父组件传递数据 -->
-        <SearchSelector @trademarkInfo="trademarkInfo"/>
+        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo"/>
 
         <!--details-->
         <div class="details clearfix">
@@ -112,7 +117,7 @@
 <script>
   import SearchSelector from './SearchSelector/SearchSelector'
   import {mapGetters} from 'vuex'
-import search from '@/store/search'
+  import search from '@/store/search'
   export default {
     name: 'Search',
     data() {
@@ -171,6 +176,16 @@ import search from '@/store/search'
       },
       removeTrademark(){
         this.searchParams.trademark = undefined
+        this.getData()
+      },
+      attrInfo(attr, attrValue){
+        // ["属性ID：属性值：属性名"]
+        let props = `${attr.attrId}:${attrValue}:${attr.attrName}`
+        if (this.searchParams.props.indexOf(props) == -1) this.searchParams.props.push(props)
+        this.getData()
+      },
+      removeAttr(index){
+        this.searchParams.props.splice(index, 1)
         this.getData()
       }
     },

@@ -16,7 +16,7 @@
       <div class="fl key">{{attrs.attrName}}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(attr, index) in attrs.attrValueList" :key="index">
+          <li v-for="(attr, index) in attrs.attrValueList" :key="attr" @click="attrInfo(attrs,attr)">
             <a>{{attr}}</a>
           </li>
         </ul>
@@ -35,7 +35,10 @@
     },
     methods: {
       tradeMatkHandler(trademark){
-          this.$emit('trademarkInfo', trademark)
+        this.$emit('trademarkInfo', trademark)
+      },
+      attrInfo(attrs,attr){
+        this.$emit('attrInfo', attrs, attr)
       }
     },
   }
