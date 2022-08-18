@@ -67,7 +67,7 @@
               </li>
             </ul>
           </div>
-          <Pagination/>
+          <Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total" :continues="5" @getPageNo="getPageNo"/>
         </div>
       </div>
     </div>
@@ -76,7 +76,7 @@
 
 <script>
   import SearchSelector from './SearchSelector/SearchSelector'
-  import {mapGetters} from 'vuex'
+  import {mapGetters, mapState} from 'vuex'
   import search from '@/store/search'
   export default {
     name: 'Search',
@@ -92,7 +92,7 @@
         trademark: "", //品牌的搜索条件
         order: "1:desc", //排序的参数 【默认初始值:1:desc】
         pageNo: 1, //当前分页器的页码  【默认初始值:1】
-        pageSize: 3, //代表当前一页显示几条数据 【默认初始值:10】
+        pageSize: 10, //代表当前一页显示几条数据 【默认初始值:10】
         }
       }
     },
@@ -118,7 +118,10 @@
       },
       isAsc(){
         return this.searchParams.order.includes('asc')
-      }
+      },
+      ...mapState({
+        total:state=>state.search.searchList.total
+      })
     },
     methods: {
       getData(){
@@ -173,6 +176,10 @@
           newOrder = `${flag}:"desc"`
         }
         this.searchParams.order = newOrder
+        this.getData()
+      },
+      getPageNo(pageNo){
+        this.searchParams.pageNo = pageNo
         this.getData()
       }
     },
