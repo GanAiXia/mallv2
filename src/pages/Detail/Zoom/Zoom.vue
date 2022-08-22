@@ -17,7 +17,12 @@
       imgObj(){
         return this.skuImageList[0] || {}
       }
-    }
+    },
+    mounted() {
+      this.$bus.$on('getIndex', (index)=>{
+        console.log(index);
+      })
+    },
   }
 </script>
 
