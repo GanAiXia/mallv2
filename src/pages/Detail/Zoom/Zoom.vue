@@ -1,11 +1,11 @@
 <template>
   <div class="spec-preview">
     <img :src="imgObj.imgUrl" />
-    <div class="event"></div>
+    <div class="event" @mousemove="handler"></div>
     <div class="big">
-      <img :src="imgObj.imgUrl" />
+      <img :src="imgObj.imgUrl"  ref="big"/>
     </div>
-    <div class="mask"></div>
+    <div class="mask" ref="mask"></div>
   </div>
 </template>
 
@@ -13,15 +13,36 @@
   export default {
     name: "Zoom",
     props: ['skuImageList'],
+    data() {
+      return {
+        index: 0
+      }
+    },
     computed: {
       imgObj(){
-        return this.skuImageList[0] || {}
+        return this.skuImageList[this.index] || {}
       }
     },
     mounted() {
       this.$bus.$on('getIndex', (index)=>{
-        console.log(index);
+        this.index = index
       })
+    },
+    methods: {
+      handler(event){
+        let mask = this.$refs.mask
+        let big = this.$refs.big
+        let left = event.offsetX - mask.offsetWidth/2
+        let top = event.offsetY - mask.offsetHeight/2
+        if(left < 0) left=0
+        if(left >= mask.offsetWidth) left = mask.offsetWidth
+        if(top < 0) top = 0
+        if(top >= mask.offsetHeight) top = mask.offsetHeight
+        mask.style.left = left + 'px'
+        mask.style.top = top + 'px'
+        big.style.left = -2 * left + 'px'
+        big.style.top = -2 * top + 'px'
+      }
     },
   }
 </script>
