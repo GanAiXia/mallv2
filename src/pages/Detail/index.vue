@@ -361,9 +361,9 @@
     methods: {
       changeActive(saleAttrValue, arr){
         arr.forEach(item => {
-          item.isChecked = 0
+          item.isChecked = "0"
         })
-        saleAttrValue.isChecked = 1
+        saleAttrValue.isChecked = "1"
       },
       changeSkuNum(event){
         let value = event.target.value * 1
@@ -376,7 +376,8 @@
       async addShopcar(){
         try {
           await this.$store.dispatch('AddOrUpdateShopCart', {skuId: this.$route.params.skuId, skuNum: this.skuNum})          
-          this.$router.push({name: 'addcartsucess'})
+          sessionStorage.setItem("SKUINFO", JSON.stringify(this.skuInfo))
+          this.$router.push({path: '/addcartsucess',query: { skuNum: this.skuNum},})
         } catch (error) {
           alert(error.message)
         }
