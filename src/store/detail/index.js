@@ -1,7 +1,9 @@
 import {reqGoodsInfo, reqAddOrUpdateShopCart} from '@/api'
+import { getUUID } from '@/utils/uuid_token'
 
 let state = {
-    goodInfo: {}
+    goodInfo: {},
+    uuid_token: getUUID()
 }
 let mutations = {
     GETGOODINFO(state, goodInfo){
@@ -21,7 +23,7 @@ let actions = {
         if (res.code == 200) {
             return 'ok'
         }else{
-            return Promise.reject(new Error('faile'))
+            return Promise.reject(new Error('faile!'))
         }
     }
 }

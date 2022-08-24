@@ -14,8 +14,8 @@ export default [
         meta: {isShow: true}
     },
     {
-        path: "/addcartsucess",
-        name: 'addcartsucess',
+        path: "/addcartsuccess",
+        name: 'addcartsuccess',
         component: AddCartSuccess,
         meta: {isShow: true}
     },

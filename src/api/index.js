@@ -21,4 +21,4 @@ export const reqGoodsInfo = (skuId) => requests({url: `/item/${skuId}`, method: 
 export const reqAddOrUpdateShopCart = (skuId, skuNum) => requests({url: `/cart/addToCart/${skuId}/${skuNum}`, method: 'post'})
 
 //获取购物车内容
-export const reqCartList = ()=> requests({url: '/cart/cartlist', method: 'get'})
+export const reqCartList = ()=> requests({url: '/cart/cartList', method: 'get'})

@@ -3,6 +3,7 @@ import  axios from 'axios'
 //引入进度条和样式文件
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
+import detail from "@/store/detail"
 
 const requests = axios.create({
     baseURL: "/api",
@@ -10,6 +11,10 @@ const requests = axios.create({
 })
 
 requests.interceptors.request.use((config) => {
+    if (detail.state.uuid_token) {
+        config.headers.userTempId = detail.state.uuid_token
+    }
+
     nprogress.start()
     return config;
 })

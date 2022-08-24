@@ -84,7 +84,7 @@
                 <a href="javascript:" class="mins" @click="skuNum > 1 ? skuNum-- : 1">-</a>
               </div>
               <div class="add">
-                <a href="javascript:" @click="addShopcar">加入购物车</a>
+                <a @click="addShopcar">加入购物车</a>
               </div>
             </div>
           </div>
@@ -377,7 +377,7 @@
         try {
           await this.$store.dispatch('AddOrUpdateShopCart', {skuId: this.$route.params.skuId, skuNum: this.skuNum})          
           sessionStorage.setItem("SKUINFO", JSON.stringify(this.skuInfo))
-          this.$router.push({path: '/addcartsucess',query: { skuNum: this.skuNum},})
+          this.$router.push({path: '/addcartsuccess',query: {skuNum: this.skuNum}})
         } catch (error) {
           alert(error.message)
         }
