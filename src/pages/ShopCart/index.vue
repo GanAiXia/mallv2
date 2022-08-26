@@ -13,14 +13,14 @@
       <div class="cart-body">
         <ul class="cart-list" v-for="(cart, index) in cartInfoList" :key="cart.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" :checked="cart.isChecked==1">
+            <input type="checkbox" name="chk_list" :checked="cart.isChecked==1" @change="updateChecked(cart, $event)">
           </li>
           <li class="cart-list-con2">
             <img :src="cart.imgUrl">
             <div class="item-msg">{{cart.skuName}}</div>
           </li>
           <li class="cart-list-con3">
-            <div class="item-txt">语音升级款</div>
+            <div class="item-txt">...</div>
           </li>
           <li class="cart-list-con4">
             <span class="price">{{cart.skuPrice}}.00</span>
@@ -68,6 +68,8 @@
 
 <script>
   import { mapGetters } from "vuex"
+  import throttle  from 'lodash/throttle'
+
   export default {
     name: 'ShopCart',
     mounted() {
@@ -77,7 +79,7 @@
       getData(){
         this.$store.dispatch("getCartList")
       },
-      async handler(type, disNum, cart){
+      handler:throttle(async function(type, disNum, cart){
         switch (type) {
           case "add":
             disNum = 1
@@ -103,7 +105,7 @@
         } catch (error) {
           
         }
-      },
+      }, 500),
       async deleteCartById(cart){
 
         try {
@@ -111,6 +113,15 @@
           this.getData()
         } catch (error) {
           alert(error.message)
+        }
+      },
+      updateChecked(cart, event){
+        try {
+          let isChecked = event.target.checked ? "1" : "0"
+          this.$store.dispatch('updateCheckedByid', {skuId: cart.skuId, isChecked})
+          this.getData()
+        } catch (error) {
+          alert(error.msg)
         }
       }
     },

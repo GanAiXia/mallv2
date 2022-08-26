@@ -25,3 +25,6 @@ export const reqCartList = ()=> requests({url: '/cart/cartList', method: 'get'})
 
 //购物车删除
 export const reqDeleteCartById = (skuId) => requests({url: `/cart/deleteCart/${skuId}`, method: 'delete'})
+
+//修改商品的选中状态
+export const reqUpdateCheckedByid = (skuId, isChecked) => requests({url:`/cart/checkCart/${skuId}/${isChecked}`, method: "get"})
