@@ -1,11 +1,15 @@
-import {reqGetCode, reqUserRegister} from '@/api'
+import {reqGetCode, reqUserRegister, reqUserLogin} from '@/api'
 
 const state = {
-    code: ''
+    code: '',
+    token: ''
 }
 const mutations = {
     GETCODE(state, code){
         state.code = code
+    },
+    USERLOGIN(state, token){
+        state.token = token
     }
 }
 const actions = {
@@ -15,7 +19,7 @@ const actions = {
             commit("GETCODE", res.data)
             return 'ok'
         }else{
-            return Promise.reject( new Error('faile'))
+            return Promise.reject( new Error('faile') )
         }
     },
     async userRegister({commit}, user){
@@ -24,7 +28,17 @@ const actions = {
         if (res.code == 200) {
             return 'ok'
         }else{
-            return Promise.reject( new Error('faile'))
+            return Promise.reject( new Error('faile') )
+        }
+    },
+    async userLogin({commit}, user){
+        let res = await reqUserLogin(user)
+        if (res.code == 200) {
+            commit("USERLOGIN", res.data.token)
+            return 'ok'
+        }else{
+            console.log(res);
+            return Promise.reject( new Error('faile') )
         }
     }
 }
