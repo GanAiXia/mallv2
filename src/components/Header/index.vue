@@ -13,7 +13,7 @@
                         </p>
                         <p v-else>
                           <a>{{userName}} </a> 
-                          <a> 退出登录</a> 
+                          <a @click="logout"> 退出登录</a> 
                         </p>
                     </div>
                     <div class="typeList">
@@ -64,6 +64,9 @@
               location.query = this.$route.query
               this.$router.push(location)              
             }
+          },
+          logout(){
+            
           }
         },
         mounted(){
