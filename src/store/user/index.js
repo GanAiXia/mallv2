@@ -55,6 +55,7 @@ const actions = {
         let res = await reqUserInfo()
         if (res.code == 200) {
             commit("GETUSERINFO", res.data)
+            return "ok"
         }else{
             return Promise.reject(new Error('faile'))
         }

@@ -65,8 +65,13 @@
               this.$router.push(location)              
             }
           },
-          logout(){
-            
+          async logout(){
+            try {
+              await this.$store.dispatch('userLogout')
+              this.$router.push('/home')
+            } catch (error) {
+              
+            }
           }
         },
         mounted(){
