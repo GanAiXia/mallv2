@@ -3,30 +3,16 @@
     <h3 class="title">填写并核对订单信息</h3>
     <div class="content">
       <h5 class="receive">收件人信息</h5>
-      <div class="address clearFix">
-        <span class="username selected">张三</span>
+
+      <div class="address clearFix" v-for="(addr, index) in addressInfo" :key="addr.regionId">
+        <span class="username selected">{{addr.consignee}}</span>
         <p>
-          <span class="s1">北京市昌平区宏福科技园综合楼6层</span>
-          <span class="s2">15010658793</span>
-          <span class="s3">默认地址</span>
+          <span class="s1">{{addr.fullAddress}}</span>
+          <span class="s2">{{addr.phoneNum}}</span>
+          <span class="s3" :class="{active:isDefault}">默认地址</span>
         </p>
       </div>
-      <div class="address clearFix">
-        <span class="username selected">李四</span>
-        <p>
-          <span class="s1">北京市昌平区宏福科技园综合楼6层</span>
-          <span class="s2">13590909098</span>
-          <span class="s3">默认地址</span>
-        </p>
-      </div>
-      <div class="address clearFix">
-        <span class="username selected">王五</span>
-        <p>
-          <span class="s1">北京市昌平区宏福科技园综合楼6层</span>
-          <span class="s2">18012340987</span>
-          <span class="s3">默认地址</span>
-        </p>
-      </div>
+
       <div class="line"></div>
       <h5 class="pay">支付方式</h5>
       <div class="address clearFix">
@@ -120,12 +106,18 @@
 </template>
 
 <script>
+  import {mapState} from 'vuex'
   export default {
     name: 'Trade',
     mounted() {
       this.$store.dispatch('getUserAddress')
       this.$store.dispatch('getOrderInfo')
     },
+    computed:{
+      ...mapState({
+        addressInfo: state=>state.trade.address
+      })
+    }
   }
 </script>
 
